@@ -12,7 +12,7 @@ namespace FullStackAuth_WebAPI.Controllers
         {
             _context = context;
         }
-        [HttpGet("bookId")]
+        [HttpGet("{bookId}")]
         public IActionResult GetBookDetails(string bookId)
         {
            try

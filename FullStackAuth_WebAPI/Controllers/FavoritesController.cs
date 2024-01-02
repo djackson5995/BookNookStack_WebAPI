@@ -1,4 +1,5 @@
 ﻿using FullStackAuth_WebAPI.Data;
+using FullStackAuth_WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -16,7 +17,7 @@ namespace FullStackAuth_WebAPI.Controllers
         {
             _context = context;
         }
-        [HttpGet("myFavorites"),Authorize]
+        [HttpGet("myFavorites"), Authorize]
         public IActionResult GetFavorite()
         {
             try
@@ -26,17 +27,48 @@ namespace FullStackAuth_WebAPI.Controllers
                 var favorites = _context.Favorite.Where(f => f.UserId.Equals(userId));
                 return StatusCode(200, favorites);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
 
 
 
-            }
-
-            
         }
+        [HttpPost, Authorize]
+        public IActionResult PostFavorite([FromBody] Favorite data)
+        {
+            try
+            {
+                string userId = User.FindFirstValue("id");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized();
+                }
+                data.UserId = userId;
+                _context.Favorite.Add(data);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                _context.SaveChanges();
+                return StatusCode(201, data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+  
+        
+
+
+    }
+
+
+
         
 
     }

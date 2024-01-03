@@ -11,11 +11,11 @@ namespace FullStackAuth_WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ReviewController : Controller
+    public class ReviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ReviewController(ApplicationDbContext context)
+        public ReviewsController(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -107,7 +107,7 @@ namespace FullStackAuth_WebAPI.Controllers
         }
 
         //POST api/cars
-       [HttpPost, Authorize]
+        [HttpPost, Authorize]
         public IActionResult Post([FromBody] Car data)
         {
             try

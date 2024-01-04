@@ -47,6 +47,35 @@ namespace FullStackAuth_WebAPI.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpDelete("{id}"), Authorize]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                Review data = _context.Review.FirstOrDefault(r => r.Id == id);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                var userId = User.FindFirstValue("id");
+                if (string.IsNullOrEmpty(userId) || data.UserId != userId)
+                {
+                    return Unauthorized();
+
+                }
+                _context.Review.Remove(data);
+                _context.SaveChanges();
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+
+
+
+        }
     }
 }
 
